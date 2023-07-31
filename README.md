@@ -1,1 +1,1 @@
-# React_study
+# react
