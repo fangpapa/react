@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: rgb(237, 245, 245);
+      }
+
+      .todo-list {
+        padding: 20px;
+        max-width: 500px;
+        width: 100%;
+        border-radius: 10px;
+        background-color: white;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .todo-list__form {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .todo-list__form-input {
+        flex: 1;
+        padding: 10px;
+        height: 40px;
+        outline: none;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .todo-list__form-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 10px;
+        width: 40px;
+        height: 40px;
+        border: none;
+        border-radius: 5px;
+        background-color: #7278c1;
+        color: white;
+        cursor: pointer;
+      }
+
+      .todo-list__list {
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+      }
+
+      .todo-list__list li {
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .todo-list__list li:nth-last-child(1) {
+        margin-bottom: 0;
+      }
+
+      .todo-list__list li .material-symbols-outlined {
+        margin-right: 10px;
+      }
+
+      .todo-list__title {
+        flex: 1;
+      }
+
+      .todo-list__remove {
+        color: red;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="todo-list">
+      <form class="todo-list__form">
+        <input class="todo-list__form-input" type="text" />
+        <button class="todo-list__form-button" type="button">
+          <span class="material-symbols-outlined"> add </span>
+        </button>
+      </form>
+      <ul class="todo-list__list"></ul>
+    </article>
+    <script>
+      const todoList = document.querySelector('.todo-list');
+      const todoListFormInput = todoList.querySelector(
+        '.todo-list__form-input',
+      );
+      const todoListFormButton = todoList.querySelector(
+        '.todo-list__form-button',
+      );
+      const todoListItems = todoList.querySelector('.todo-list__list');
+
+      const todoListDate = [
+        {
+          content: 'item1',
+          complete: false,
+        },
+        {
+          content: 'item2',
+          complete: true,
+        },
+        {
+          content: 'item3',
+          complete: false,
+        },
+      ];
+
+      const updateUI = () => {
+        let todoListItemsHTML = '';
+
+        todoListDate.forEach(({ content, complete }) => {
+          todoListItemsHTML += `
+          <li>
+            <span class="material-symbols-outlined todo-list__check">
+                ${complete ? 'check_box' : 'check_box_outline_blank'}
+            </span>
+            <span class="todo-list__title">${content}</span>
+            <span class="material-symbols-outlined todo-list__remove">delete</span>
+          </li>`;
+        });
+
+        todoListItems.innerHTML = todoListItemsHTML;
+        addItemEvent();
+      };
+
+      const addItemEvent = () => {
+        const todoListItems = todoList.querySelectorAll('.todo-list__list li');
+
+        todoListItems.forEach((item, index) => {
+          const itemDelete = item.querySelector('.todo-list__remove');
+          const itemAdd = item.querySelector('.todo-list__check');
+
+          itemDelete.addEventListener('click', () => {
+            todoListDate.splice(index, 1);
+            updateUI();
+          });
+
+          itemAdd.addEventListener('click', () => {
+            todoListDate[index].complete = !todoListDate[index].complete;
+            updateUI();
+          });
+        });
+      };
+
+      todoListFormButton.addEventListener('click', () => {
+        const content = todoListFormInput.value;
+
+        if (!content.trim()) {
+          todoListFormInput.value = '';
+          return;
+        }
+
+        todoListDate.push({
+          content,
+          complete: false,
+        });
+
+        todoListFormInput.value = '';
+
+        updateUI();
+      });
+
+      updateUI();
+    </script>
+  </body>
+</html>

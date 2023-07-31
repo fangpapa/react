@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+    <!-- 不要使用他在正式的專案上 -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      function Hello() {
+        return <h1>Hello, world!</h1>;
+      }
+
+      // React component名稱開頭大寫
+      const HeadTag = () => <header>Head tag</header>;
+
+      const NewTag = ({ name }) => <b>new tag {name} </b>;
+
+      const NewTag1 = (props) => <b>new tag {props.name}</b>;
+
+      const NewTag2 = (props) => {
+        const { name } = props;
+        return (
+          <b>
+            new tag2 {name}
+            <br />
+            {name === 'Dennis' ? 'true' : 'false'}
+            <br />
+            {`fff${name}`}
+          </b>
+        );
+      };
+
+      const Hello1 = () => (
+        <h1 className="a">
+          <HeadTag />
+          Hello1, world! <br />
+          <NewTag1 name="Dennis" />
+          <br />
+          <NewTag2 name="Dennis" />
+        </h1>
+      );
+      ReactDOM.render(<Hello1 />, document.getElementById('root'));
+    </script>
+  </body>
+</html>

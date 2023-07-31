@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <span>A</span>
+    <script>
+      const args = [1, 2, 3, 4];
+      // 看prototype有的function就可以用
+      console.log(args);
+
+      let domElement = document.getElementsByTagName('span');
+      // 這裡的span就沒有for each
+      console.log(domElement);
+
+      // 沒有foreach可以用原生for處理
+      for (let index = 0; index < domElement.length; index++) {
+        const element = domElement[index];
+        console.log(element);
+      }
+
+      // 展開運算式
+      const arrayA = [1, 2, 3];
+      const arrayB = [1, 2, 3, ...arrayA];
+      console.log(arrayB); //[1, 2, 3, 1, 2, 3]
+
+      const test = { name: 'test', age: 12 };
+      // 對物件也可以展開，但需要物件包
+      // console.log(...test); // error
+
+      // 用展開運算式可以替換物件資訊
+      console.log({ ...test, name: 'AAA' });
+      console.log(test);
+
+      // 解構賦值
+      const turtle = {
+        name: '鑽石 🐢',
+        legs: 4,
+        shell: true,
+        type: '北美鑽紋龜',
+        meal: 10,
+        diet: '生魚片？',
+      };
+
+      function feed(animal) {
+        const { name, meal, diet } = animal;
+        return `餵食 ${name} ${meal} 小片 ${diet}`;
+      }
+      console.log(feed(turtle));
+
+      const fruits = new Map([
+        ['apples', { name: 'AAA' }],
+        ['bananas', { name: 'BBB' }],
+        ['oranges', { name: 'CCC' }],
+      ]);
+      console.log(fruits);
+      console.log(JSON.stringify(fruits));
+      console.log(JSON.stringify(Array.from(fruits)));
+    </script>
+  </body>
+</html>

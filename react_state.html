@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+    <!-- 不要使用他在正式的專案上 -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState } = React;
+
+      function Hello() {
+        const [isOpen, setIsOpen] = useState(true);
+
+        return (
+          <h1 className="a" onClick={() => setIsOpen(!isOpen)}>
+            Hello, world! {isOpen ? 'open' : 'close'}
+          </h1>
+        );
+      }
+
+      ReactDOM.render(<Hello />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
