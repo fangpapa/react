@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+    <!-- 不要使用他在正式的專案上 -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const Navbar = () => {
+        const navItem = [
+          {
+            name: 'Home',
+            url: '/',
+          },
+          {
+            name: 'About',
+            url: '/about',
+          },
+          {
+            name: 'Contact',
+            url: '/contact',
+          },
+        ];
+
+        return (
+          <nav>
+            {
+              // JSX Expressions
+              navItem.map((item) => {
+                return <a key={item.name}>{item.name}</a>;
+              })
+            }
+          </nav>
+        );
+      };
+
+      const Footer = () => {
+        return <footer>Footer</footer>;
+      };
+
+      function App() {
+        return (
+          <main>
+            <Navbar />
+            <Footer />
+          </main>
+        );
+      }
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
