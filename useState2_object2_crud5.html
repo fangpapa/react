@@ -77,25 +77,21 @@
       ];
 
       const CarItem = (props) => {
-        const [isOpen, setIsOpen] = useState(true);
-
-        const { item, deleteItem } = props;
+        const { item, deleteItem, setNewItem } = props;
         return (
-          <li key={item.id} onClick={() => setIsOpen(!isOpen)}>
+          <li key={item.id}>
             <aside className="cart__cover">
               <img src={item.image} alt={item.name} />
             </aside>
-            {isOpen ? (
-              <article className="cart__info">
-                <h2>{item.name}</h2>
-                <p>價錢:{item.price}</p>
-                <p>數量:{item.quantity}</p>
-                <p>總計:{item.price * item.quantity}</p>
-                <button onClick={() => deleteItem(item.id)}>刪除產品</button>
-              </article>
-            ) : (
-              ''
-            )}
+
+            <article className="cart__info">
+              <h2>{item.name}</h2>
+              <p>價錢:{item.price}</p>
+              <p>數量:{item.quantity}</p>
+              <p>總計:{item.price * item.quantity}</p>
+              <button onClick={() => deleteItem(item.id)}>刪除產品</button>
+              <button onClick={() => setNewItem(item)}>修改商品</button>
+            </article>
           </li>
         );
       };
@@ -126,6 +122,21 @@
           setCart(newCart);
         };
 
+        const editItem = () => {
+          console.log(newItem);
+
+          const newCart = cart.map((item) =>
+            item.id === newItem.id ? newItem : item,
+          );
+          setCart(newCart);
+          setNewItem({
+            name: '',
+            price: 0,
+            quantity: 0,
+            image: 'https://fakeimg.pl/250x100/',
+          });
+        };
+
         return (
           <main className="container">
             <form>
@@ -146,10 +157,15 @@
                   </React.Fragment>
                 );
               })}
-
-              <button type="button" onClick={() => createItem()}>
-                新增產品
-              </button>
+              {newItem.id ? (
+                <button type="button" onClick={() => editItem()}>
+                  編輯產品
+                </button>
+              ) : (
+                <button type="button" onClick={() => createItem()}>
+                  新增產品
+                </button>
+              )}
             </form>
             <br />
             <input type="text" onChange={(e) => setKeyWord(e.target.value)} />
@@ -164,7 +180,12 @@
                   // 需要加上key，讓react判斷需要重新render
                   // React建議不要用index當作key，因為CRUD會導致KEY不一樣
                   // 只要同一個組件有多筆，都要帶KEY
-                  <CarItem key={item.id} item={item} deleteItem={deleteItem} />
+                  <CarItem
+                    key={item.id}
+                    item={item}
+                    deleteItem={deleteItem}
+                    setNewItem={setNewItem}
+                  />
                 ))}
             </ul>
           </main>
