@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+    <!-- 不要使用他在正式的專案上 -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        margin: 20px;
+      }
+
+      .cart {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .cart > li {
+        display: flex;
+        margin-bottom: 20px;
+        padding: 20px;
+        border: solid 1px #cbcbcb;
+      }
+
+      .cart__cover {
+        margin-right: 20px;
+        width: 250px;
+        height: 100px;
+      }
+
+      .cart__info > * {
+        margin-bottom: 10px;
+      }
+
+      .cart__info > *:nth-last-child(1) {
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState } = React;
+
+      const cartDate = [
+        {
+          id: 1,
+          name: '超級鉛筆',
+          price: 290,
+          quantity: 2,
+          image: 'https://fakeimg.pl/250x100/',
+        },
+        {
+          id: 2,
+          name: '超級橡皮差',
+          price: 390,
+          quantity: 1,
+          image: 'https://fakeimg.pl/250x100/',
+        },
+      ];
+
+      const App = () => {
+        const [cart, setCart] = useState(cartDate);
+        const [keyWord, setKeyWord] = useState('');
+        const [newItem, setNewItem] = useState({
+          name: '',
+          price: 0,
+          quantity: 0,
+          image: 'https://fakeimg.pl/250x100/',
+        });
+
+        console.table(cart);
+
+        const deleteItem = (id) => {
+          // filter會產生新的物件，所以更新是有效的
+          const newCar = cart.filter((item) => item.id != id);
+          setCart(newCar);
+        };
+
+        const createItem = () => {
+          // 在react不建議直接操作DOM
+          // const name = document.querySelector('input[name="name"]').value;
+          // const price = document.querySelector('input[name="price"]').value;
+          // const quantity = document.querySelector(
+          //   'input[name="quantity"]',
+          // ).value;
+
+          const newCart = [
+            { ...newItem, id: Math.floor(Math.random() * Date.now()) },
+            ...cart,
+          ];
+          setCart(newCart);
+        };
+
+        return (
+          <main className="container">
+            <form>
+              <label htmlFor="name">名稱</label>
+              <input
+                name="name"
+                type="text"
+                value={newItem.name}
+                onChange={(e) =>
+                  setNewItem({ ...newItem, name: e.target.value })
+                }
+              />
+              <br />
+              <label htmlFor="price">價錢</label>
+              <input
+                name="price"
+                type="number"
+                value={newItem.price}
+                onChange={(e) =>
+                  setNewItem({ ...newItem, price: e.target.value })
+                }
+              />
+              <br />
+              <label htmlFor="quantity">數量</label>
+              <input
+                name="quantity"
+                type="number"
+                value={newItem.quantity}
+                onChange={(e) =>
+                  setNewItem({ ...newItem, quantity: e.target.value })
+                }
+              />
+              <br />
+              <button type="button" onClick={() => createItem()}>
+                新增產品
+              </button>
+            </form>
+            <br />
+            <input type="text" onChange={(e) => setKeyWord(e.target.value)} />
+            <br />
+            {keyWord}
+            <br />
+            <ul className="cart">
+              {cart
+                // display filter可以保護原始資料不會被修改
+                .filter((item) => item.name.includes(keyWord))
+                .map((item, index) => (
+                  // 需要加上key，讓react判斷需要重新render
+                  // React建議不要用index當作key，因為CRUD會導致KEY不一樣
+                  <li key={item.id}>
+                    <aside className="cart__cover">
+                      <img src={item.image} alt={item.name} />
+                    </aside>
+                    <article className="cart__info">
+                      <h2>{item.name}</h2>
+                      <p>價錢:{item.price}</p>
+                      <p>數量:{item.quantity}</p>
+                      <p>總計:{item.price * item.quantity}</p>
+                      <button onClick={() => deleteItem(item.id)}>
+                        刪除產品
+                      </button>
+                    </article>
+                  </li>
+                ))}
+            </ul>
+          </main>
+        );
+      };
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
