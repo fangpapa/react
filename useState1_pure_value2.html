@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+    <!-- 不要使用他在正式的專案上 -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState } = React;
+
+      const App = () => {
+        const [currentNumber, setCurrentNumber] = useState(1);
+
+        console.log(currentNumber);
+
+        return (
+          <main>
+            <nav>
+              <button
+                onClick={() => {
+                  setCurrentNumber(currentNumber + 1);
+                  console.log('我被執行了01');
+                  setCurrentNumber(currentNumber + 1);
+                  console.log('我被執行了02');
+                  // TODO
+                  // 非同步執行
+                  // 都被執行但是值只有加1是因為useState的currentNumber會存在stack內
+                  // 當這兩行執行時，都是拿相同的值運算
+                  // react會避免一直重複render
+                  // hook的值都是在stack內，不會被清空
+
+                  // 真的要變更兩次，用以下方法，將原值計算完之後再傳入
+                  // TODO
+                  // setCurrentNumber((currentNumber) => currentNumber + 1);
+                  // setCurrentNumber((currentNumber) => currentNumber + 1);
+                }}
+              >
+                按鈕二
+              </button>
+            </nav>
+            currentNumber:{currentNumber}
+          </main>
+        );
+      };
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>

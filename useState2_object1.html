@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+    <!-- 不要使用他在正式的專案上 -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState } = React;
+
+      const App = () => {
+        const [person, setPerson] = useState({
+          firstName: 'John',
+          lastName: 'Doe',
+          age: 18,
+          email: 'test.com',
+        });
+
+        // 不要用這個方式修改資料
+        // person.age = 99;
+
+        // const宣告的不能修改，盡量使用hook提供的方式修改資料
+        // person = {};
+
+        const function01 = () => {
+          setPerson({
+            firstName: 'John111',
+            lastName: 'Doe222',
+            age: 99,
+            email: 'aaa.com',
+          });
+        };
+
+        const function01_1 = () => {
+          setPerson({
+            ...person,
+            age: person.age + 1,
+          });
+        };
+
+        const function02 = () => {
+          person.firstName = 'John999';
+          console.log(person);
+          setPerson(person);
+        };
+
+        const function03 = () => {};
+
+        const function04 = () => {};
+
+        return (
+          <main>
+            <nav>
+              <button onClick={() => function01()}>按鈕一</button>
+              <button onClick={() => function02()}>按鈕二</button>
+              <button onClick={() => function03()}>按鈕三</button>
+              <button onClick={() => function03()}>按鈕四</button>
+            </nav>
+            {JSON.stringify(person)}
+          </main>
+        );
+      };
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>

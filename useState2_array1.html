@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+    <!-- 不要使用他在正式的專案上 -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState } = React;
+
+      const App = () => {
+        // useState會將const [numberArray, setNumberArray]存在另一個記憶體，會有保護機制
+        const [numberArray, setNumberArray] = useState([1, 2, 3, 4]);
+
+        const function01 = () => {
+          setNumberArray([1, 2, 3]);
+          console.log(numberArray);
+        };
+
+        const function02 = () => {
+          // hook只認reference
+          // 記憶體位址沒有變更，畫面不render
+          // 但是push是有效的
+          // 如果畫面不變更，盡量使用let宣告，不要用state操作
+          numberArray.push(5);
+          console.log(numberArray);
+          setNumberArray(numberArray);
+        };
+
+        const function03 = () => {
+          numberArray.push(5);
+          console.log(numberArray);
+          // 展開運算式成為新的Array，記憶體位址改變，畫面render
+          setNumberArray([...numberArray]);
+        };
+
+        const function03_1 = () => {
+          // 展開運算式成為新的Array，記憶體位址改變，畫面render
+          setNumberArray([...numberArray, numberArray.length + 1]);
+          console.log(numberArray);
+        };
+
+        const function03_2 = () => {
+          // 展開運算式成為新的Array，記憶體位址改變，畫面render
+          setNumberArray([...numberArray, numberArray.length + 1]);
+          // 第二次無效
+          setNumberArray([...numberArray, numberArray.length + 1]);
+          console.log(numberArray);
+        };
+
+        const function03_3 = () => {
+          // 展開運算式成為新的Array，記憶體位址改變，畫面render
+          setNumberArray((numberArray) => [
+            ...numberArray,
+            numberArray.length + 1,
+          ]);
+          setNumberArray((numberArray) => [
+            ...numberArray,
+            numberArray.length + 1,
+          ]);
+          console.log(numberArray);
+        };
+
+        const function04 = () => {
+          numberArray.push(5);
+          console.log(numberArray);
+          // 轉為JSON再轉回，記憶體位址改變，畫面render
+          setNumberArray(JSON.parse(JSON.stringify(numberArray)));
+        };
+
+        return (
+          <main>
+            <nav>
+              <button onClick={() => function01()}>按鈕一</button>
+              <button onClick={() => function02()}>按鈕二</button>
+              <button onClick={() => function03_2()}>按鈕三</button>
+              <button onClick={() => function03()}>按鈕四</button>
+            </nav>
+            {numberArray.join(',')}
+          </main>
+        );
+      };
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>

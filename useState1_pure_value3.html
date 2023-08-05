@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+    <!-- 不要使用他在正式的專案上 -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState } = React;
+
+      const App = () => {
+        // https://hackmd.io/@chris80072/rkE9SCx6D
+        const [currentNumber, setCurrentNumber] = useState(1);
+
+        console.log(currentNumber);
+
+        let maxNumber = 10;
+
+        const numberCount = (number) => {
+          if (currentNumber + number < 0) return;
+          if (currentNumber + number > maxNumber) return;
+
+          setCurrentNumber(currentNumber + number);
+        };
+
+        return (
+          <main>
+            <nav>
+              <button onClick={() => numberCount(-1)}>按鈕一</button>
+              <button onClick={() => numberCount(+1)}>按鈕二</button>
+            </nav>
+            currentNumber:{currentNumber}
+          </main>
+        );
+      };
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>

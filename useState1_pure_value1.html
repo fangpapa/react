@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+    <!-- 不要使用他在正式的專案上 -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState } = React;
+
+      const App = () => {
+        // UI變更的時候，會觸發const [currentNumber, setCurrentNumber]重建
+        // 也是const內的資料可以改的原因
+        const [currentNumber, setCurrentNumber] = useState(1);
+
+        // react優化 -> 減少觸發virtual DOM的次數
+        console.log('每次點擊按鈕，都會觸發');
+
+        let test = 1;
+        // const test = 1;執行會錯誤
+
+        return (
+          <main>
+            <nav>
+              <button onClick={() => setCurrentNumber(2)}>按鈕一</button>
+              <button onClick={() => setCurrentNumber(currentNumber + 1)}>
+                按鈕二
+              </button>
+              <button onClick={() => setCurrentNumber(currentNumber - 1)}>
+                按鈕三
+              </button>
+              {
+                // 按鈕四被執行時，test會加1，但是不會觸發畫面重建，
+                // 但是按鈕一二三執行時，function會被重建，test會被重置為1
+                // 所以會需要useState協助保存值
+              }
+              <button
+                onClick={() => {
+                  test = test + 1;
+                  console.log(test);
+                }}
+              >
+                按鈕四
+              </button>
+            </nav>
+            currentNumber:{currentNumber}
+            <br></br>
+            test:{test}
+          </main>
+        );
+      };
+
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
