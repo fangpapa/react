@@ -95,13 +95,6 @@
         };
 
         const createItem = () => {
-          // 在react不建議直接操作DOM
-          // const name = document.querySelector('input[name="name"]').value;
-          // const price = document.querySelector('input[name="price"]').value;
-          // const quantity = document.querySelector(
-          //   'input[name="quantity"]',
-          // ).value;
-
           const newCart = [
             { ...newItem, id: Math.floor(Math.random() * Date.now()) },
             ...cart,
